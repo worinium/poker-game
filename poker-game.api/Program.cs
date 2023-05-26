@@ -1,9 +1,15 @@
+using db_manager.lib;
+using System.Configuration;
+using System.Runtime.CompilerServices;
+
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure dependency injection
 // Add services to the container.
-builder.Services.Config
+string connectionString = "Server=localhost,1443;Database=poker-game;User Id=sa;Password=Worisoft@123;Encrypt=false;";
+
+DependencyInjectionConfig.Configure(builder.Services, connectionString);
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

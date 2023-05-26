@@ -4,9 +4,11 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
+using NHibernate.Tool.hbm2ddl;
 using poker_game.domain;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -22,6 +24,11 @@ namespace db_manager.lib
             var sessionFactory = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString))
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<User>())
+                .ExposeConfiguration(cfg =>
+                {
+                    // Generate the database schema
+                    new SchemaExport(cfg).Create(true, true);
+                })
                 .BuildSessionFactory();
 
             // Register session factory and session per request
